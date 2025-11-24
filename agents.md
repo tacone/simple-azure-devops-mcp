@@ -31,10 +31,10 @@ pnpm install
 pnpm build
 
 # Run tests
-pnpm test
+pnpm test run
 
 # Run tests with coverage
-pnpm test:coverage
+pnpm test:coverage run
 
 # Development mode (watch)
 pnpm dev

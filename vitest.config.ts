@@ -7,7 +7,15 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: ['dist', 'node_modules', '**/*.test.ts', 'vitest.config.ts']
-    }
-  }
+      exclude: [
+        'dist',
+        'node_modules',
+        '**/*.test.ts',
+        'vitest.config.ts',
+        'eslint.config.mjs',
+        '.husky',
+        'coverage',
+      ],
+    },
+  },
 });
