@@ -46,7 +46,7 @@ export function parsePRUrl(url: string): ParsedPRUrl {
       organization: devAzureMatch[1],
       project: decodeURIComponent(devAzureMatch[2]),
       repositoryId: decodeURIComponent(devAzureMatch[3]),
-      pullRequestId: devAzureMatch[4]
+      pullRequestId: devAzureMatch[4],
     };
   }
 
@@ -60,7 +60,7 @@ export function parsePRUrl(url: string): ParsedPRUrl {
       organization: legacyMatch[1],
       project: decodeURIComponent(legacyMatch[2]),
       repositoryId: decodeURIComponent(legacyMatch[3]),
-      pullRequestId: legacyMatch[4]
+      pullRequestId: legacyMatch[4],
     };
   }
 
@@ -106,7 +106,8 @@ export async function getPRComments(
 
       if (thread.comments && Array.isArray(thread.comments)) {
         for (const comment of thread.comments) {
-          const commentStatus = comment.commentType === 'system' ? 'system' : threadStatus?.toLowerCase() || 'active';
+          const commentStatus =
+            comment.commentType === 'system' ? 'system' : threadStatus?.toLowerCase() || 'active';
 
           // Skip system comments unless explicitly included
           if (!includeSystemComments && comment.commentType === 'system') {
@@ -123,14 +124,14 @@ export async function getPRComments(
             content: comment.content || '',
             author: {
               displayName: comment.author?.displayName || 'Unknown',
-              uniqueName: comment.author?.uniqueName || ''
+              uniqueName: comment.author?.uniqueName || '',
             },
             publishedDate: comment.publishedDate,
             lastUpdatedDate: comment.lastUpdatedDate || comment.publishedDate,
             commentType: comment.commentType || 'text',
             threadId: thread.id,
             status: commentStatus,
-            threadStatus: threadStatus
+            threadStatus: threadStatus,
           });
         }
       }
@@ -138,6 +139,8 @@ export async function getPRComments(
 
     return comments;
   } catch (error) {
-    throw new Error(`Failed to get PR comments: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to get PR comments: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
   }
 }

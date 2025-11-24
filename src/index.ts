@@ -7,25 +7,41 @@ import {
   ListToolsRequestSchema,
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
-import { checkAzCliAvailable, checkAzAuthentication, ensureAzDevOpsExtension } from './azure-cli.js';
+import {
+  checkAzCliAvailable,
+  checkAzAuthentication,
+  ensureAzDevOpsExtension,
+} from './azure-cli.js';
 import { getPRComments } from './pr-comments.js';
 
 // Define available tools
 const TOOLS: Tool[] = [
   {
     name: 'get_pr_comments',
-    description: 'Retrieves comments from an Azure DevOps Pull Request with their metadata. Optionally filter by comment status (active, fixed, closed, etc.).',
+    description:
+      'Retrieves comments from an Azure DevOps Pull Request with their metadata. Optionally filter by comment status (active, fixed, closed, etc.).',
     inputSchema: {
       type: 'object',
       properties: {
         pr_url: {
           type: 'string',
-          description: 'The full URL of the Azure DevOps Pull Request (e.g., https://dev.azure.com/{org}/{project}/_git/{repo}/pullrequest/{id})',
+          description:
+            'The full URL of the Azure DevOps Pull Request (e.g., https://dev.azure.com/{org}/{project}/_git/{repo}/pullrequest/{id})',
         },
         status_filter: {
           type: 'string',
-          description: 'Optional filter for comment status. Values: active, fixed, closed, wontfix, pending, bydesign, unknown, system',
-          enum: ['active', 'fixed', 'closed', 'wontfix', 'pending', 'bydesign', 'unknown', 'system'],
+          description:
+            'Optional filter for comment status. Values: active, fixed, closed, wontfix, pending, bydesign, unknown, system',
+          enum: [
+            'active',
+            'fixed',
+            'closed',
+            'wontfix',
+            'pending',
+            'bydesign',
+            'unknown',
+            'system',
+          ],
         },
       },
       required: ['pr_url'],
@@ -73,11 +89,16 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify({
-                error: 'Azure CLI is not installed or not available in PATH',
-                details: cliCheck.error,
-                instructions: 'Please install Azure CLI from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli',
-              }, null, 2),
+              text: JSON.stringify(
+                {
+                  error: 'Azure CLI is not installed or not available in PATH',
+                  details: cliCheck.error,
+                  instructions:
+                    'Please install Azure CLI from https://docs.microsoft.com/en-us/cli/azure/install-azure-cli',
+                },
+                null,
+                2
+              ),
             },
           ],
         };
@@ -90,13 +111,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify({
-                cli_installed: true,
-                cli_version: cliCheck.version,
-                authenticated: false,
-                error: authCheck.error,
-                instructions: 'Please run: az login',
-              }, null, 2),
+              text: JSON.stringify(
+                {
+                  cli_installed: true,
+                  cli_version: cliCheck.version,
+                  authenticated: false,
+                  error: authCheck.error,
+                  instructions: 'Please run: az login',
+                },
+                null,
+                2
+              ),
             },
           ],
         };
@@ -109,14 +134,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({
-              cli_installed: true,
-              cli_version: cliCheck.version,
-              authenticated: true,
-              account: authCheck.account,
-              devops_extension: extensionCheck.installed,
-              status: 'ready',
-            }, null, 2),
+            text: JSON.stringify(
+              {
+                cli_installed: true,
+                cli_version: cliCheck.version,
+                authenticated: true,
+                account: authCheck.account,
+                devops_extension: extensionCheck.installed,
+                status: 'ready',
+              },
+              null,
+              2
+            ),
           },
         ],
       };
@@ -144,10 +173,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify({
-                error: 'Azure CLI is not available',
-                instructions: 'Please install Azure CLI and run: az login',
-              }, null, 2),
+              text: JSON.stringify(
+                {
+                  error: 'Azure CLI is not available',
+                  instructions: 'Please install Azure CLI and run: az login',
+                },
+                null,
+                2
+              ),
             },
           ],
           isError: true,
@@ -160,10 +193,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify({
-                error: 'Not authenticated with Azure CLI',
-                instructions: 'Please run: az login',
-              }, null, 2),
+              text: JSON.stringify(
+                {
+                  error: 'Not authenticated with Azure CLI',
+                  instructions: 'Please run: az login',
+                },
+                null,
+                2
+              ),
             },
           ],
           isError: true,
@@ -174,29 +211,33 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       await ensureAzDevOpsExtension();
 
       // Get PR comments
-      const comments = await getPRComments(pr_url, status_filter);
+      const comments = await getPRComments(pr_url, { statusFilter: status_filter });
 
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({
-              pr_url,
-              status_filter: status_filter || 'all',
-              total_comments: comments.length,
-              comments: comments.map(c => ({
-                id: c.id,
-                thread_id: c.threadId,
-                author: c.author.displayName,
-                author_email: c.author.uniqueName,
-                content: c.content,
-                status: c.status,
-                thread_status: c.threadStatus,
-                comment_type: c.commentType,
-                published_date: c.publishedDate,
-                last_updated_date: c.lastUpdatedDate,
-              })),
-            }, null, 2),
+            text: JSON.stringify(
+              {
+                pr_url,
+                status_filter: status_filter || 'all',
+                total_comments: comments.length,
+                comments: comments.map((c) => ({
+                  id: c.id,
+                  thread_id: c.threadId,
+                  author: c.author.displayName,
+                  author_email: c.author.uniqueName,
+                  content: c.content,
+                  status: c.status,
+                  thread_status: c.threadStatus,
+                  comment_type: c.commentType,
+                  published_date: c.publishedDate,
+                  last_updated_date: c.lastUpdatedDate,
+                })),
+              },
+              null,
+              2
+            ),
           },
         ],
       };
@@ -216,10 +257,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       content: [
         {
           type: 'text',
-          text: JSON.stringify({
-            error: error instanceof Error ? error.message : 'Unknown error',
-            tool: name,
-          }, null, 2),
+          text: JSON.stringify(
+            {
+              error: error instanceof Error ? error.message : 'Unknown error',
+              tool: name,
+            },
+            null,
+            2
+          ),
         },
       ],
       isError: true,

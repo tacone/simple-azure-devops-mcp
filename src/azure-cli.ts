@@ -3,10 +3,23 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
+interface AzureExtension {
+  experimental: boolean;
+  extensionType: string;
+  name: string;
+  path: string;
+  preview: boolean;
+  version: string;
+}
+
 /**
  * Check if Azure CLI is installed and available
  */
-export async function checkAzCliAvailable(): Promise<{ available: boolean; version?: string; error?: string }> {
+export async function checkAzCliAvailable(): Promise<{
+  available: boolean;
+  version?: string;
+  error?: string;
+}> {
   try {
     const { stdout } = await execAsync('az --version');
     const versionMatch = stdout.match(/azure-cli\s+(\S+)/);
@@ -16,7 +29,7 @@ export async function checkAzCliAvailable(): Promise<{ available: boolean; versi
   } catch (error) {
     return {
       available: false,
-      error: error instanceof Error ? error.message : 'Azure CLI not found'
+      error: error instanceof Error ? error.message : 'Azure CLI not found',
     };
   }
 }
@@ -24,19 +37,23 @@ export async function checkAzCliAvailable(): Promise<{ available: boolean; versi
 /**
  * Check if user is authenticated with Azure CLI
  */
-export async function checkAzAuthentication(): Promise<{ authenticated: boolean; account?: string; error?: string }> {
+export async function checkAzAuthentication(): Promise<{
+  authenticated: boolean;
+  account?: string;
+  error?: string;
+}> {
   try {
     const { stdout } = await execAsync('az account show');
     const account = JSON.parse(stdout);
 
     return {
       authenticated: true,
-      account: account.user?.name || account.name
+      account: account.user?.name || account.name,
     };
-  } catch (error) {
+  } catch {
     return {
       authenticated: false,
-      error: 'Not authenticated. Please run: az login'
+      error: 'Not authenticated. Please run: az login',
     };
   }
 }
@@ -48,8 +65,8 @@ export async function ensureAzDevOpsExtension(): Promise<{ installed: boolean; e
   try {
     // Check if extension is installed
     const { stdout } = await execAsync('az extension list --output json');
-    const extensions = JSON.parse(stdout);
-    const devopsExtension = extensions.find((ext: any) => ext.name === 'azure-devops');
+    const extensions: AzureExtension[] = JSON.parse(stdout);
+    const devopsExtension = extensions.find((ext) => ext.name === 'azure-devops');
 
     if (devopsExtension) {
       return { installed: true };
@@ -61,7 +78,7 @@ export async function ensureAzDevOpsExtension(): Promise<{ installed: boolean; e
   } catch (error) {
     return {
       installed: false,
-      error: error instanceof Error ? error.message : 'Failed to install azure-devops extension'
+      error: error instanceof Error ? error.message : 'Failed to install azure-devops extension',
     };
   }
 }

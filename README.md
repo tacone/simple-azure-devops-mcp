@@ -250,6 +250,33 @@ pnpm test
 pnpm test:coverage
 ```
 
+### Linting and Formatting
+
+This project uses ESLint for linting and Prettier for code formatting:
+
+```bash
+# Run linter
+pnpm lint
+
+# Fix linting issues automatically
+pnpm lint:fix
+
+# Format code with Prettier
+pnpm format
+
+# Check formatting without making changes
+pnpm format:check
+```
+
+### Git Hooks
+
+Husky is configured to run lint-staged on pre-commit, which automatically:
+
+- Runs ESLint with auto-fix on staged TypeScript files
+- Formats code with Prettier
+
+This ensures code quality and consistency before commits.
+
 ### Watch mode for development
 
 ```bash

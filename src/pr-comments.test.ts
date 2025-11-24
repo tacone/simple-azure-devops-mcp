@@ -26,7 +26,7 @@ describe('PR Comments utilities', () => {
     it('should accept both options together', () => {
       const options: GetPRCommentsOptions = {
         statusFilter: 'active',
-        includeSystemComments: false
+        includeSystemComments: false,
       };
       expect(options.statusFilter).toBe('active');
       expect(options.includeSystemComments).toBe(false);
