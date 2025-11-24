@@ -61,7 +61,7 @@ const TOOLS: Tool[] = [
 // Create server instance
 const server = new Server(
   {
-    name: 'simple-azure-mcp-mcp',
+    name: 'simple-azure-devops-mcp',
     version: '1.0.0',
   },
   {

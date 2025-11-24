@@ -1,11 +1,11 @@
 {
-  "name": "simple-azure-mcp-mcp",
+  "name": "simple-azure-devops-mcp",
   "version": "1.0.0",
   "description": "MCP server for reviewing Azure DevOps PR comments using Azure CLI",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "simple-azure-mcp-mcp": "dist/index.js"
+    "simple-azure-devops-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",

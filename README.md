@@ -2,7 +2,9 @@
 
 A Model Context Protocol (MCP) server for reviewing Azure DevOps Pull Request comments using the Azure CLI.
 
-## Package Manager
+🔒 Readonly.
+
+🤖 Made by the AI for the AI.
 
 ## Features
 
@@ -36,7 +38,6 @@ pnpm build
 ## Azure CLI Setup
 
 1. **Install Azure CLI** (if not already installed):
-
    - macOS: `brew install azure-cli`
    - Windows: Download from [Microsoft Docs](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-windows)
    - Linux: Follow [Linux installation guide](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux)
@@ -118,8 +119,9 @@ Retrieves comments from an Azure DevOps Pull Request with optional status filter
 
 ### Example PR URL Formats
 
-```
+```plaintext
 https://dev.azure.com/myorg/myproject/_git/myrepo/pullrequest/123
+
 https://myorg.visualstudio.com/myproject/_git/myrepo/pullrequest/456
 ```
 
@@ -136,7 +138,7 @@ Add this entry to the `servers` object:
 ```json
 {
   "servers": {
-    "simple-azure-mcp": {
+    "simple-azure-devops-mcp": {
       "command": "node",
       "type": "stdio",
       "args": ["/absolute/path/to/azure-mcp/dist/index.js"]
@@ -163,7 +165,7 @@ Create or edit `.vscode/settings.json` to automatically enable MCP server for th
 {
   "github.copilot.chat.mcp.enabled": true,
   "github.copilot.chat.mcp.servers": {
-    "simple-azure-mcp": {
+    "simple-azure-devops-mcp": {
       "command": "node",
       "args": ["${workspaceFolder}/dist/index.js"]
     }
@@ -190,7 +192,7 @@ Create or edit `.vscode/settings.json` to automatically enable MCP server for th
 ```json
 {
   "mcpServers": {
-    "simple-azure-mcp": {
+    "simple-azure-devops-mcp": {
       "command": "node",
       "args": ["/absolute/path/to/azure-mcp/dist/index.js"]
     }
@@ -221,7 +223,7 @@ Add this server to your Claude Desktop configuration:
 ```json
 {
   "mcpServers": {
-    "simple-azure-mcp": {
+    "simple-azure-devops-mcp": {
       "command": "node",
       "args": ["/absolute/path/to/azure-mcp/dist/index.js"]
     }
