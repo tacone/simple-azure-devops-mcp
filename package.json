@@ -1,0 +1,38 @@
+{
+  "name": "simple-azure-mcp-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for reviewing Azure DevOps PR comments using Azure CLI",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "simple-azure-mcp-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "prepare": "pnpm build"
+  },
+  "keywords": [
+    "mcp",
+    "azure",
+    "devops",
+    "pull-request",
+    "pr-comments"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
